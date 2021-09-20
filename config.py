@@ -1,5 +1,5 @@
 settings = {
-    'token': 'ODg5NTA5Mjk0NTM2NTQ0MjY2.YUiSFg._roHYpbVqbHL-qbdI0UUc17UsaU',
+    'token': '<string here>', # Token was deleted due to the safety measures
     'bot': 'LiprikonBoot',
     'id': 889509294536544266,
     'prefix': '/'
