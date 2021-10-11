@@ -10,6 +10,7 @@ async def салам(ctx):
     author = ctx.message.author
     await ctx.send(f'Салам алейкум, {author.mention}!')
 
+
 @bot.command()
 async def hello(ctx):
     author = ctx.message.author
