@@ -27,6 +27,7 @@ async def правила(ctx):
     await ctx.send(f'6.Не банить участников без ведома верховного админа')
     await ctx.send(f'7.Не устраивать революции')
 
+
 @bot.command()
 async def rules(ctx):
     await ctx.send(f'1.Не спамить')
@@ -37,6 +38,7 @@ async def rules(ctx):
     await ctx.send(f'6.Не банить участников без ведома верховного админа')
     await ctx.send(f'7.Не устраивать революции')
 
+
 @bot.command()
 async def pingadmins(ctx: commands.Context):
     # Получаем роль
@@ -44,9 +46,11 @@ async def pingadmins(ctx: commands.Context):
     # Отправляем сообщение
     await ctx.send(f"Роль: {role.mention}")
 
+
 @bot.command()
 async def prefix(ctx):
     await ctx.send(settings['prefix'])
+
 
 @bot.command()
 async def bothelp(ctx):
