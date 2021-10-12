@@ -39,12 +39,26 @@ async def rules(ctx):
     await ctx.send(f'7.Не устраивать революции')
 
 
+# Raw feature
+@bot.command()
+async def куадмины(ctx: commands.Context):
+    # Получаем роль
+    role = ctx.guild.get_role(role_id=752070970054803520)
+    # Отправляем сообщение
+    await ctx.send(f"Роль: {role.mention}")
+
+# Raw feature
 @bot.command()
 async def pingadmins(ctx: commands.Context):
     # Получаем роль
     role = ctx.guild.get_role(role_id=752070970054803520)
     # Отправляем сообщение
-    await ctx.send(f"Роль: {role.mention}")
+    await ctx.send(f"Role: {role.mention}")
+
+
+@bot.command()
+async def префикс(ctx):
+    await ctx.send(settings['prefix'])
 
 
 @bot.command()
@@ -53,24 +67,35 @@ async def prefix(ctx):
 
 
 @bot.command()
-async def bothelp(ctx):
+async def помощь(ctx):
     await ctx.send(f'Все комманды должны использоваться с префиксом бота :robot: .'
                     'Вот текущий список комманд:'
                     '\n\n• Помощь :hammer: (help):\n'
-                    '   |----"bothelp"\n'
+                    '   |----"помощь"\n'
                     '   |    Отправляет вот это сообщение.\n'
-                    '   |----"prefix"\n'
+                    '   |----"префикс"\n'
                     '   |    Выдаёт текущий префикс.\n'
                     '\n• Приветствия :handshake: (ping):\n'
-                    '   |----"hello"\n'
-                    '   |    Для проверки онлайна бота (пинга), т.к. зелёная точка не всегда показывает правду.\n'
                     '   |----"салам"\n'
-                    '   |    То же самое.\n'
+                    '   |    Для проверки онлайна бота (пинга), т.к. зелёная точка не всегда показывает правду.\n'
                     '\n• Правила :closed_book: (moder):\n'
-                    '   |----"rules"\n'
-                    '   |    Напоминает правила.\n'
                     '   |----"правила"\n'
                     '   |    То же самое.\n')
 
+@bot.command()
+async def bothelp(ctx):
+    await ctx.send(f"All commands can be used only if the bot's :robot: prefix is typed right before the command."
+                    'Current list of commands:'
+                    '\n\n• Help :hammer: (help):\n'
+                    '   |----"bothelp"\n'
+                    '   |    Sends this message.\n'
+                    '   |----"prefix"\n'
+                    "   |    Sends the bot's prefix.\n"
+                    '\n• Greetings :handshake: (ping):\n'
+                    '   |----"hello"\n'
+                    "   |    It's to check if the bot is online because this green dot isn't always showing the truth.\n"
+                    '\n• Rules :closed_book: (moder):\n'
+                    '   |----"rules"\n'
+                    '   |    Reminds the rules.\n'
 
 bot.run(settings['token'])
