@@ -3,6 +3,12 @@ from discord.ext import commands
 from config import settings
 import request
 from forbidden_words import swearing
+import sys
+import asyncio
+
+TOKEN = str(sys.argv[1])
+id = int(sys.argv[2])
+
 
 client = discord.Client()
 
@@ -53,6 +59,16 @@ async def rules(ctx):
                     "5.Do not change the server's name with no permission of the Head Admin\n"
                     '6.Do not ban other members with no permission of the Head Admin\n'
                     '7.Revolutions are forbidden\n')
+
+
+@bot.command()
+async def ping(ctx):
+    '''
+    Make the server not sleep
+    '''
+    while True:
+        await ctx.send("ping")
+        await asyncio.sleep(1800)
 
 
 # Raw feature
@@ -149,4 +165,4 @@ async def bothelp(ctx):
                     '   |    Reminds the rules.\n')
 '''
 
-bot.run(settings['token'])
+bot.run(TOKEN)
