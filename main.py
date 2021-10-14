@@ -6,8 +6,8 @@ from forbidden_words import swearing
 import sys
 import asyncio
 
-TOKEN = str(sys.argv[1])
-id = int(sys.argv[2])
+TOKEN = input()
+id = int(input())
 
 
 client = discord.Client()
