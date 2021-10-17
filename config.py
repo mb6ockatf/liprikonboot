@@ -1,4 +1,0 @@
-settings = {
-    'bot': 'LiprikonBoot',
-    'prefix': '/'
-    }
