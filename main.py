@@ -16,59 +16,87 @@ bot = discord.Client()
 bot = commands.Bot(command_prefix = settings['prefix'])
 
 
-
-@bot.command()
-async def салам(ctx):
-    '''Пинаем бота'''
-    author = ctx.message.author
-    await ctx.send(f'Салам алейкум, {author.mention}!')
-
-
-@bot.command()
-async def hello(ctx):
-    '''
-    Ping the bot
-    '''
-    author = ctx.message.author
-    await ctx.send(f'Hello, {author.mention}!')
+class System:
+    @bot.command(pass_context=True)
+    async def ping(self, ctx):
+        '''
+        Make the server not sleep
+        '''
+        while True:
+            await ctx.send("ping")
+            await asyncio.sleep(1800)
 
 
-@bot.command()
-async def правила(ctx):
-    '''
-    Правила
-    '''
-    await ctx.send(f'1.Не спамить\n'
-                    '2.Не бунтовать\n'
-                    '3.Не оскорблять админов и других участников\n'
-                    '4.Быть вежливым\n'
-                    '5.Не менять название сервера без разришения верховного админа\n'
-                    '6.Не банить участников без ведома верховного админа\n'
-                    '7.Не устраивать революции\n')
+class Ping:
+    """
+    Commands to get some reply from the bot to check online
+    """
+    @bot.command(pass_context=True)
+    async def салам(self, ctx):
+        '''
+        Проверяем, онлайн ли бот
+        '''
+        author = ctx.message.author
+        await ctx.send(f'Салам алейкум, {author.mention}!')
 
 
-@bot.command()
-async def rules(ctx):
-    '''
-    Shows the rules
-    '''
-    await ctx.send(f'1.Do not spam\n'
-                    '2.Do not rebel\n'
-                    '3.Do not offend admins & other members\n'
-                    '4.Be polite\n'
-                    "5.Do not change the server's name with no permission of the Head Admin\n"
-                    '6.Do not ban other members with no permission of the Head Admin\n'
-                    '7.Revolutions are forbidden\n')
+    @bot.command(pass_context=True)
+    async def hello(self, ctx):
+        '''
+        Check if the bot is online
+        '''
+        author = ctx.message.author
+        await ctx.send(f'Hello, {author.mention}!')
 
 
-@bot.command()
-async def ping(ctx):
-    '''
-    Make the server not sleep
-    '''
-    while True:
-        await ctx.send("ping")
-        await asyncio.sleep(1800)
+class Information:
+    @bot.command(pass_context=True)
+    async def правила(self, ctx):
+        '''
+        Правила
+        '''
+        await ctx.send(f'1.Не спамить\n'
+                        '2.Не бунтовать\n'
+                        '3.Не оскорблять админов и других участников\n'
+                        '4.Быть вежливым\n'
+                        '5.Не менять название сервера без разрешения верховного админа\n'
+                        '6.Не банить участников без ведома верховного админа\n'
+                        '7.Не устраивать революции\n'
+                        '    © @liprikon2020')
+
+
+    @bot.command(pass_context=True)
+    async def rules(self, ctx):
+        '''
+        Shows the rules
+        '''
+        await ctx.send(f'1.Do not spam\n'
+                        '2.Do not rebel\n'
+                        '3.Do not offend admins & other members\n'
+                        '4.Be polite\n'
+                        "5.Do not change the server's name with no permission of the Head Admin\n"
+                        '6.Do not ban other members with no permission of the Head Admin\n'
+                        '7.Revolutions are forbidden\n'
+                        '    © @liprikon2020')
+
+
+    @bot.command(pass_context=True)
+    async def префикс(self, ctx):
+        '''
+        Текущий префикс
+        '''
+        await ctx.send(settings['prefix'])
+
+
+    @bot.command(pass_context=True)
+    async def prefix(self, ctx):
+        '''
+        Current prefix
+        '''
+        await ctx.send(settings['prefix'])
+
+
+ 
 
 
 # Raw feature
@@ -110,20 +138,6 @@ async def pingadmins(ctx: commands.Context):
     await ctx.send(f"Role: {role.mention}")
 
 
-@bot.command()
-async def префикс(ctx):
-    '''
-    Текущий префикс
-    '''
-    await ctx.send(settings['prefix'])
-
-
-@bot.command()
-async def prefix(ctx):
-    '''
-    Current prefix
-    '''
-    await ctx.send(settings['prefix'])
 
 '''
 @bot.command()
@@ -142,7 +156,7 @@ async def помощь(ctx):
                     '   |    Для проверки онлайна бота (пинга), т.к. зелёная точка не всегда показывает правду.\n'
                     '\n• Правила :closed_book: (moder):\n'
                     '   |----"правила"\n'
-                    '   |    То же самое.\n')
+                    '    |    То же самое.\n')
 
 
 @bot.command()
@@ -164,5 +178,10 @@ async def bothelp(ctx):
                     '   |----"rules"\n'
                     '   |    Reminds the rules.\n')
 '''
+
+# Adding all cathegories
+bot.add_cog(System())
+bot.add_cog(Ping())
+bot.add_cog(Information())
 
 bot.run(TOKEN)
