@@ -1,13 +1,39 @@
+'''
+Setup:
+- 2 vitally important environment variables before running this code:
+  discord_token = <your token here>
+  discord_id = <your id here>
+
+- A few environment variables with some roles' ids:
+  discord_admins = <role id>
+
+  discord_members = <role id>
+  (all verified members)
+
+  discord_owner = <role id>
+  (server's owner role)
+
+
+'''
+
+
 import discord
 from discord.ext import commands
 from config import settings
 import request
 from forbidden_words import swearing
 import sys
+import os
 import asyncio
 
-TOKEN = 'ODg5NTA5Mjk0NTM2NTQ0MjY2.YUiSFg.jb99fk9yqO3rRnwe-H5v-vujk0w'
-id = 889509294536544266
+settings = {
+    'bot': 'LiprikonBoot',
+    'prefix': '/',
+    'TOKEN': sys.getenv(discord_token),
+    # TODO: Check syntax around there
+    # TODO: Install TODO extension
+    'id': sys.getenv(discord_id)
+    }
 
 
 client = discord.Client()
@@ -20,7 +46,8 @@ class System:
     @bot.command(pass_context=True)
     async def ping(self, ctx):
         '''
-        Make the server not sleep
+        Make the server not sleep, because Heroku is known to
+        stop the code if it does nothing for some time
         '''
         while True:
             await ctx.send("ping")
@@ -97,49 +124,52 @@ class Information:
 
 
  
+class Mention:
+    @bot.command(pass_context=True)
+    async def куадмины(self, message):
+        '''
+        Упоминание админов
+        '''
+        admins = ctx.guild.get_role(admins_role_id)
+        # Отправляем сообщение
+        await message.reply(f"Ахтунг! {admins.mention} были упомянуты {ctx.message.author.mention}", mention_author = True)
 
 
-# Raw feature
-@bot.command()
-async def куадмины(ctx: commands.Context):
-    '''
-    Упоминаем младшего админа
-    '''
-    # Получаем роль
-    role = ctx.guild.get_role(role_id=752070970054803520)
-    # Отправляем сообщение
-    await ctx.send(f"Роль: {role.mention}")
+    @bot.command(pass_context=True)
+    async def pingadmins(self, message):
+        '''
+        Pings admin's role
+        '''
+        admins = ctx.guild.get_role(admins_role_id)
+        # Отправляем сообщение
+        await message.reply(f"Achtung! {admins.mention} were menrioned by {ctx.message.author.mention}", mention_author = True)
 
-'''
-@bot.command()
-async def enemy():
-'''
+
+    @bot.command(pass_context=True)
+    async def куадмины(self, message):
+        '''
+        Упоминание модераторов (админы + владелец)
+        Используйте команду pigadmins, если упоминать владельца ненужно
+        '''
+        a = []
+        for j in moder_role_id:
+            a.append(ctx.guild.get_role(j))
+        # Отправляем сообщение
+        await message.reply(f"Ахтунг! {j.mention for j in a} были упомянуты {ctx.message.author.mention}", mention_author = True)
 
 
 
 @bot.event
 async def on_message(message):
+    # React when message contains swearing
     for j in swearing:
         if j in message.content:
             await message.reply('pong', mention_author=True)
     await bot.process_commands(message)
 
 
-
-# Raw feature
-@bot.command()
-async def pingadmins(ctx: commands.Context):
-    '''
-    Pings Junior Admin's role
-    '''
-    # Получаем роль
-    role = ctx.guild.get_role(role_id=752070970054803520)
-    # Отправляем сообщение
-    await ctx.send(f"Role: {role.mention}")
-
-
-
 '''
+# TODO: Do I need a customized 'help' output command?
 @bot.command()
 async def помощь(ctx):
     Отправляет значение всех комманд
@@ -183,5 +213,6 @@ async def bothelp(ctx):
 bot.add_cog(System())
 bot.add_cog(Ping())
 bot.add_cog(Information())
+bot.add_cog(Mention())
 
-bot.run(TOKEN)
+bot.run(settings['TOKEN'])
