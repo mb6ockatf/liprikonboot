@@ -22,17 +22,16 @@ from discord.ext import commands
 import request
 import roles
 from forbidden_words import swearing
-import sys
 import os
 import asyncio
 
 settings = {
     'bot': 'LiprikonBoot',
     'prefix': '/',
-    'TOKEN': sys.getenv(discord_token),
+    'TOKEN': os.environ['discord_token'],
     # TODO: Check syntax around there
     # TODO: Install TODO extension
-    'id': sys.getenv(discord_id)
+    'id': os.environ['discord_id']
     }
 
 
