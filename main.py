@@ -43,12 +43,12 @@ bot = commands.Bot(command_prefix = settings['prefix'])
 
 
 class System:
+
     @bot.command(pass_context=True)
     async def ping(self, ctx):
         '''
         Make the server not sleep, because Heroku is known to
         stop the code if it does nothing for some time
-        Only available in English
         '''
         while True:
             await ctx.send("ping")
@@ -57,12 +57,12 @@ class System:
             await asyncio.sleep(1800)
 
 
-    @bot.command(pass_context = True)
-    async def clear(ctx, amount=None):
+    @bot.command(pass_context=True)
+    async def clear(self, amount=None):
         '''
         Only for admins
         Deletes the quantity of messages which is mentioned after the command,
-        or daletes *all messages*
+        or deletes *all messages*
         For an instance,
         <prefix here>clear 12
         - deletes 12 last messages,
@@ -83,7 +83,7 @@ class System:
 
 
     @bot.command(pass_context = True)
-    async def очистить(ctx, amount=None):
+    async def очистить(self, amount=None):
         '''
         Только для админов
         Удаляет то количество сообщений, которое введено после команды,
