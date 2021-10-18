@@ -180,7 +180,7 @@ class Information:
         Текущий префикс
         '''
         await ctx.send(settings['prefix'])
-        await async.sleep(5)
+        await asyncio.sleep(5)
         await ctx.message.delete()
 
 
