@@ -19,35 +19,28 @@ Setup:
 
 import discord
 from discord.ext import commands
-import request
 import roles
 from forbidden_words import swearing
 import os
 import asyncio
-
 settings = {
     'bot': 'LiprikonBoot',
     'prefix': '/',
     'TOKEN': os.environ['discord_token'],
-    # TODO: Check syntax around there
-    # TODO: Install TODO extension
     'id': os.environ['discord_id']
     }
-
-
 client = discord.Client()
-
 bot = discord.Client()
 bot = commands.Bot(command_prefix = settings['prefix'])
 
 
 class System(commands.Cog):
-
     @commands.command(pass_context=True)
     async def ping(self, ctx):
         """
-        Make the server not sleep, because Heroku is known to
-        stop the code if it does nothing for some time
+        Make the server not sleep.
+        Because Heroku is known to stop the code if it does nothing for some
+        time (or not?).
         """
         while True:
             await ctx.send("ping")
@@ -57,9 +50,25 @@ class System(commands.Cog):
 
 
     @commands.command(pass_context=True)
-    async def clear(self, amount=None):
-        '''
-        Only for admins
+    async def пинг(self, ctx):
+        """
+        RU: Делает так, чтобы ссервер не спал.
+        Потому что хостинг Heroku останавливает
+        сервер если он ничего не делает в течение
+        некоторого времени (а может и нет).
+        """
+        while True:
+            await ctx.send("пинг")
+            await asyncio.sleep(5)
+            await ctx.message.delete()
+            await asyncio.sleep(1800)
+
+
+    @commands.command(pass_context=True)
+    async def clear(self, ctx,  amount=None):
+        """
+        Clear the chat.
+        Only for admins!
         Deletes the quantity of messages which is mentioned after the command,
         or deletes *all messages*
         For an instance,
@@ -68,7 +77,7 @@ class System(commands.Cog):
         and
          <prefix here>clear
         - deletes all messages
-        '''
+        """
         is_admin = False
         for role in discord.Member.roles:
             if role.name == roles.admins_role_id:
@@ -76,15 +85,16 @@ class System(commands.Cog):
                 break
         if is_admin:
             await ctx.channel.purge(limit=int(amount))
-            await ctx.channel.send(':: Sucessfully deleted.')
+            await ctx.channel.send(':: Successfully deleted.')
         else:
             await ctx.send("Not enough rights to run this :-< \n  Just contact admins")
 
 
     @commands.command(pass_context = True)
-    async def очистить(self, amount=None):
+    async def очистить(self, ctx, amount=None):
         """
-        Только для админов
+        RU: Очистка чата.
+        Только для админов!
         Удаляет то количество сообщений, которое
         введено после команды,
         либо очищает *весь чат*.
@@ -107,26 +117,20 @@ class System(commands.Cog):
                            " или напиши администраторам.")
 
 
-class Pingg((commands.Cog)):
-    """
-    Commands to get some reply from the bot to check online
-    """
+class Ping(commands.Cog):
     @commands.command(pass_context=True)
     async def салам(self, ctx):
-        '''
-        Проверяем, онлайн ли бот
-        '''
+        """RU: Проверка, онлайн ли бот"""
         author = ctx.message.author
         await ctx.send(f'Салам алейкум, {author.mention}!')
         await asyncio.sleep(5)
+        # TODO: Need normal delete func there
         await ctx.message.delete()
 
 
     @commands.command(pass_context=True)
     async def hello(self, ctx):
-        '''
-        Check if the bot is online
-        '''
+        """Check if the bot is online"""
         author = ctx.message.author
         await ctx.send(f'Hello, {author.mention}!')
         await asyncio.sleep(5)
@@ -136,9 +140,7 @@ class Pingg((commands.Cog)):
 class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def правила(self, ctx):
-        '''
-        Правила
-        '''
+        """RU: Правила"""
         await ctx.send(f'1.Не спамить\n'
                         '2.Не бунтовать\n'
                         '3.Не оскорблять админов и других \
@@ -156,9 +158,7 @@ class Information(commands.Cog):
 
     @commands.command(pass_context=True)
     async def rules(self, ctx):
-        '''
-        Shows the rules
-        '''
+        """Shows the rules"""
         await ctx.send(f'1.Do not spam\n'
                         '2.Do not rebel\n'
                         '3.Do not offend admins & other members\n'
@@ -175,48 +175,42 @@ class Information(commands.Cog):
 
     @commands.command(pass_context=True)
     async def префикс(self, ctx):
-        '''
-        Текущий префикс
-        '''
+        """RU: Текущий префикс"""
         await ctx.send(settings['prefix'])
         await asyncio.sleep(5)
+        # TODO: make normal message delete
         await ctx.message.delete()
 
 
     @commands.command(pass_context=True)
     async def prefix(self, ctx):
-        '''
-        Current prefix
-        '''
+        """Current prefix"""
         await ctx.send(settings['prefix'])
         await asyncio.sleep(5)
+        # TODO: make normal message delete
         await ctx.message.delete()
 
  
 class Mention(commands.Cog):
     @commands.command(pass_context=True)
-    async def pingadmins(self, message):
-        """
-        Pings admin's role
-        """
+    async def pingadmins(self, ctx,  message):
+        """Pings admin role"""
+        # TODO: Bug there
         admins = ctx.guild.get_role(roles.admins_role_id)
-        # Отправляем сообщение
-        await message.reply(f"Achtung! {admins.mention} were menrioned by\
+        await message.reply(f"Achtung! {admins.mention} were mentioned by\
             {ctx.message.author.mention}", mention_author = True)
 
 
     @commands.command(pass_context=True)
-    async def куадмины(self, message):
-        """
-        Упоминание модераторов (админы + владелец)
+    async def куадмины(self, ctx):
+        """RU: Упоминание модераторов (админы + владелец).
         Используйте команду pigadmins, если
-        упоминать владельца ненужно
-        """
+        упоминать владельца не нужно."""
         a = []
+        # TODO: Bug there
         for j in roles.moder_role_id:
             a.append(ctx.guild.get_role(j))
-        # Отправляем сообщение
-        await message.reply(f"Ахтунг! {j.mention for j in a} были \
+        await ctx.message.reply(f"Ахтунг! {j.mention for j in a} были \
          упомянуты {ctx.message.author.mention}", mention_author = True)
 
 
@@ -272,9 +266,8 @@ async def bothelp(ctx):
                     '   |    Reminds the rules.\n')
 '''
 
-# Adding all cathegories
 bot.add_cog(System())
-bot.add_cog(Pingg())
+bot.add_cog(Ping())
 bot.add_cog(Information())
 bot.add_cog(Mention())
 
