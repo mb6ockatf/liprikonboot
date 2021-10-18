@@ -1,4 +1,4 @@
-'''
+"""
 Setup:
 - 2 vitally important environment variables before running this code:
   discord_token = <your token here>
@@ -14,13 +14,13 @@ Setup:
   (server's owner role)
 
 
-'''
+"""
 
 
 import discord
 from discord.ext import commands
-from config import settings
 import request
+import roles
 from forbidden_words import swearing
 import sys
 import os
@@ -46,10 +46,10 @@ class System:
 
     @bot.command(pass_context=True)
     async def ping(self, ctx):
-        '''
+        """
         Make the server not sleep, because Heroku is known to
         stop the code if it does nothing for some time
-        '''
+        """
         while True:
             await ctx.send("ping")
             await asyncio.sleep(5)
@@ -72,38 +72,40 @@ class System:
         '''
         is_admin = False
         for role in discord.Member.roles:
-            if role.name == admins_role_id:
+            if role.name == roles.admins_role_id:
                 is_admin = True
                 break
         if is_admin:
             await ctx.channel.purge(limit=int(amount))
             await ctx.channel.send(':: Sucessfully deleted.')
         else:
-            await ctx.send("Not enough rights to run this :-< \n Just contact admins")
+            await ctx.send("Not enough rights to run this :-< \n  Just contact admins")
 
 
     @bot.command(pass_context = True)
     async def очистить(self, amount=None):
-        '''
+        """
         Только для админов
-        Удаляет то количество сообщений, которое введено после команды,
+        Удаляет то количество сообщений, которое
+        введено после команды,
         либо очищает *весь чат*.
         Например,
         <сдесь префикс>очистить 12
         - удалит 12 последних сообщений, a
         <сдесь префикс>очистить
         - удалит все сообщения
-        '''
+        """
         is_admin = False
         for role in discord.Member.roles:
-            if role.name == admins_role_id:
+            if role.name ==roles.admins_role_id:
                 is_admin = True
                 break
         if is_admin:
             await ctx.channel.purge(limit=int(amount))
             await ctx.channel.send(':: Сообщения успешно удалены')
         else:
-            await ctx.send("Недостаточно прав :-< \n Смирись или напиши администраторам.")
+            await ctx.send("Недостаточно прав :-< Смирись\n"
+                           " или напиши администраторам.")
 
 
 class Ping:
@@ -140,10 +142,13 @@ class Information:
         '''
         await ctx.send(f'1.Не спамить\n'
                         '2.Не бунтовать\n'
-                        '3.Не оскорблять админов и других участников\n'
+                        '3.Не оскорблять админов и других \
+                        участников\n'
                         '4.Быть вежливым\n'
-                        '5.Не менять название сервера без разрешения верховного админа\n'
-                        '6.Не банить участников без ведома верховного админа\n'
+                        '5.Не менять название сервера без\
+                         разрешения верховного админа\n'
+                        '6.Не банить участников без ведома \
+                        верховного админа\n'
                         '7.Не устраивать революции\n'
                         '    © @liprikon2020')
         await asyncio.sleep(5)
@@ -159,8 +164,10 @@ class Information:
                         '2.Do not rebel\n'
                         '3.Do not offend admins & other members\n'
                         '4.Be polite\n'
-                        "5.Do not change the server's name with no permission of the Head Admin\n"
-                        '6.Do not ban other members with no permission of the Head Admin\n'
+                        "5.Do not change the server's name with no permission of the \
+                        Head Admin\n"
+                        '6.Do not ban other members with no permission of the Head \
+                        Admin\n'
                         '7.Revolutions are forbidden\n'
                         '    © @liprikon2020')
         asyncio.sleep(5)
@@ -183,42 +190,46 @@ class Information:
         Current prefix
         '''
         await ctx.send(settings['prefix'])
-        await async.sleep(5)
+        await asyncio.sleep(5)
         await ctx.message.delete()
 
  
 class Mention:
     @bot.command(pass_context=True)
     async def куадмины(self, message):
-        '''
+        """
         Упоминание админов
-        '''
-        admins = ctx.guild.get_role(admins_role_id)
+        """
+        admins = ctx.guild.get_role(roles.admins_role_id)
         # Отправляем сообщение
-        await message.reply(f"Ахтунг! {admins.mention} были упомянуты {ctx.message.author.mention}", mention_author = True)
+        await message.reply(f"Ахтунг! {admins.mention} были \
+        упомянуты {ctx.message.author.mention}", mention_author = True)
 
 
     @bot.command(pass_context=True)
     async def pingadmins(self, message):
-        '''
+        """
         Pings admin's role
-        '''
-        admins = ctx.guild.get_role(admins_role_id)
+        """
+        admins = ctx.guild.get_role(roles.admins_role_id)
         # Отправляем сообщение
-        await message.reply(f"Achtung! {admins.mention} were menrioned by {ctx.message.author.mention}", mention_author = True)
+        await message.reply(f"Achtung! {admins.mention} were menrioned by\
+            {ctx.message.author.mention}", mention_author = True)
 
 
     @bot.command(pass_context=True)
     async def куадмины(self, message):
-        '''
+        """
         Упоминание модераторов (админы + владелец)
-        Используйте команду pigadmins, если упоминать владельца ненужно
-        '''
+        Используйте команду pigadmins, если
+        упоминать владельца ненужно
+        """
         a = []
-        for j in moder_role_id:
+        for j in roles.moder_role_id:
             a.append(ctx.guild.get_role(j))
         # Отправляем сообщение
-        await message.reply(f"Ахтунг! {j.mention for j in a} были упомянуты {ctx.message.author.mention}", mention_author = True)
+        await message.reply(f"Ахтунг! {j.mention for j in a} были \
+         упомянуты {ctx.message.author.mention}", mention_author = True)
 
 
 
@@ -237,7 +248,8 @@ async def on_message(message):
 async def помощь(ctx):
     Отправляет значение всех комманд
 
-    await ctx.send(f'Все комманды должны использоваться с префиксом бота :robot: .'
+    await ctx.send(f'Все комманды должны \
+    использоваться с префиксом бота :robot: .'
                     'Вот текущий список комманд:'
                     '\n\n• Помощь :hammer: (help):\n'
                     '   |----"помощь"\n'
