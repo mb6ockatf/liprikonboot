@@ -51,9 +51,23 @@ class System:
         '''
         while True:
             await ctx.send("ping")
-            await ctx.channel.purge(10)
+            await asyncio.sleep(5)
+            await ctx.message.delete()
             await asyncio.sleep(1800)
 
+
+    @bot.command(pass_context = true)
+    async def clear(ctx, amount=None):
+        is_admin = False
+        for role in discord.Member.roles:
+            if role.name == admins_role_id:
+                is_admin = True
+                break
+        if is_admin:
+            await ctx.channel.purge(limit=int(amount))
+            await ctx.channel.send(':: Сообщения успешно удалены')
+        else:
+            await ctx.send("Not enough rights to run this :-< \n or just contact admins")
 
 
 class Ping:
@@ -67,7 +81,8 @@ class Ping:
         '''
         author = ctx.message.author
         await ctx.send(f'Салам алейкум, {author.mention}!')
-        await ctx.channel.purge(10)
+        await asyncio.sleep(5)
+        await ctx.message.delete()
 
 
     @bot.command(pass_context=True)
@@ -77,7 +92,9 @@ class Ping:
         '''
         author = ctx.message.author
         await ctx.send(f'Hello, {author.mention}!')
-        await ctx.channel.purge(10)
+        await asyncio.sleep(5)
+        await ctx.message.delete()
+
 
 class Information:
     @bot.command(pass_context=True)
@@ -93,7 +110,8 @@ class Information:
                         '6.Не банить участников без ведома верховного админа\n'
                         '7.Не устраивать революции\n'
                         '    © @liprikon2020')
-        await ctx.channel.purge(10)
+        await asyncio.sleep(5)
+        await ctx.message.delete()
 
 
     @bot.command(pass_context=True)
@@ -109,7 +127,8 @@ class Information:
                         '6.Do not ban other members with no permission of the Head Admin\n'
                         '7.Revolutions are forbidden\n'
                         '    © @liprikon2020')
-        await ctx.channel.purge(10)
+        asyncio.sleep(5)
+        await ctx.message.delete()
 
 
     @bot.command(pass_context=True)
@@ -118,6 +137,8 @@ class Information:
         Текущий префикс
         '''
         await ctx.send(settings['prefix'])
+        await async.sleep(5)
+        await ctx.message.delete()
 
 
     @bot.command(pass_context=True)
@@ -126,7 +147,8 @@ class Information:
         Current prefix
         '''
         await ctx.send(settings['prefix'])
-
+        await async.sleep(5)
+        await ctx.message.delete()
 
  
 class Mention:
