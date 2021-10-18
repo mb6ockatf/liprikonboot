@@ -48,6 +48,7 @@ class System:
         '''
         Make the server not sleep, because Heroku is known to
         stop the code if it does nothing for some time
+        Only available in English
         '''
         while True:
             await ctx.send("ping")
@@ -56,8 +57,43 @@ class System:
             await asyncio.sleep(1800)
 
 
-    @bot.command(pass_context = true)
+    @bot.command(pass_context = True)
     async def clear(ctx, amount=None):
+        '''
+        Only for admins
+        Deletes the quantity of messages which is mentioned after the command,
+        or daletes *all messages*
+        For an instance,
+        <prefix here>clear 12
+        - deletes 12 last messages,
+        and
+         <prefix here>clear
+        - deletes all messages
+        '''
+        is_admin = False
+        for role in discord.Member.roles:
+            if role.name == admins_role_id:
+                is_admin = True
+                break
+        if is_admin:
+            await ctx.channel.purge(limit=int(amount))
+            await ctx.channel.send(':: Sucessfully deleted.')
+        else:
+            await ctx.send("Not enough rights to run this :-< \n Just contact admins")
+
+
+    @bot.command(pass_context = True)
+    async def очистить(ctx, amount=None):
+        '''
+        Только для админов
+        Удаляет то количество сообщений, которое введено после команды,
+        либо очищает *весь чат*.
+        Например,
+        <сдесь префикс>очистить 12
+        - удалит 12 последних сообщений, a
+        <сдесь префикс>очистить
+        - удалит все сообщения
+        '''
         is_admin = False
         for role in discord.Member.roles:
             if role.name == admins_role_id:
@@ -67,7 +103,7 @@ class System:
             await ctx.channel.purge(limit=int(amount))
             await ctx.channel.send(':: Сообщения успешно удалены')
         else:
-            await ctx.send("Not enough rights to run this :-< \n or just contact admins")
+            await ctx.send("Недостаточно прав :-< \n Смирись или напиши администраторам.")
 
 
 class Ping:
