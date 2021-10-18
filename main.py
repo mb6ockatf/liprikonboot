@@ -51,7 +51,9 @@ class System:
         '''
         while True:
             await ctx.send("ping")
+            await ctx.channel.purge(10)
             await asyncio.sleep(1800)
+
 
 
 class Ping:
@@ -65,6 +67,7 @@ class Ping:
         '''
         author = ctx.message.author
         await ctx.send(f'Салам алейкум, {author.mention}!')
+        await ctx.channel.purge(10)
 
 
     @bot.command(pass_context=True)
@@ -74,7 +77,7 @@ class Ping:
         '''
         author = ctx.message.author
         await ctx.send(f'Hello, {author.mention}!')
-
+        await ctx.channel.purge(10)
 
 class Information:
     @bot.command(pass_context=True)
@@ -90,6 +93,7 @@ class Information:
                         '6.Не банить участников без ведома верховного админа\n'
                         '7.Не устраивать революции\n'
                         '    © @liprikon2020')
+        await ctx.channel.purge(10)
 
 
     @bot.command(pass_context=True)
@@ -105,6 +109,7 @@ class Information:
                         '6.Do not ban other members with no permission of the Head Admin\n'
                         '7.Revolutions are forbidden\n'
                         '    © @liprikon2020')
+        await ctx.channel.purge(10)
 
 
     @bot.command(pass_context=True)
