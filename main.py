@@ -41,9 +41,9 @@ bot = discord.Client()
 bot = commands.Bot(command_prefix = settings['prefix'])
 
 
-class System:
+class System(commands.Cog):
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def ping(self, ctx):
         """
         Make the server not sleep, because Heroku is known to
@@ -56,7 +56,7 @@ class System:
             await asyncio.sleep(1800)
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def clear(self, amount=None):
         '''
         Only for admins
@@ -81,7 +81,7 @@ class System:
             await ctx.send("Not enough rights to run this :-< \n  Just contact admins")
 
 
-    @bot.command(pass_context = True)
+    @commands.command(pass_context = True)
     async def очистить(self, amount=None):
         """
         Только для админов
@@ -107,11 +107,11 @@ class System:
                            " или напиши администраторам.")
 
 
-class Ping:
+class Pingg((commands.Cog)):
     """
     Commands to get some reply from the bot to check online
     """
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def салам(self, ctx):
         '''
         Проверяем, онлайн ли бот
@@ -122,7 +122,7 @@ class Ping:
         await ctx.message.delete()
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def hello(self, ctx):
         '''
         Check if the bot is online
@@ -133,8 +133,8 @@ class Ping:
         await ctx.message.delete()
 
 
-class Information:
-    @bot.command(pass_context=True)
+class Information(commands.Cog):
+    @commands.command(pass_context=True)
     async def правила(self, ctx):
         '''
         Правила
@@ -154,7 +154,7 @@ class Information:
         await ctx.message.delete()
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def rules(self, ctx):
         '''
         Shows the rules
@@ -173,7 +173,7 @@ class Information:
         await ctx.message.delete()
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def префикс(self, ctx):
         '''
         Текущий префикс
@@ -183,7 +183,7 @@ class Information:
         await ctx.message.delete()
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def prefix(self, ctx):
         '''
         Current prefix
@@ -193,19 +193,8 @@ class Information:
         await ctx.message.delete()
 
  
-class Mention:
-    @bot.command(pass_context=True)
-    async def куадмины(self, message):
-        """
-        Упоминание админов
-        """
-        admins = ctx.guild.get_role(roles.admins_role_id)
-        # Отправляем сообщение
-        await message.reply(f"Ахтунг! {admins.mention} были \
-        упомянуты {ctx.message.author.mention}", mention_author = True)
-
-
-    @bot.command(pass_context=True)
+class Mention(commands.Cog):
+    @commands.command(pass_context=True)
     async def pingadmins(self, message):
         """
         Pings admin's role
@@ -216,7 +205,7 @@ class Mention:
             {ctx.message.author.mention}", mention_author = True)
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def куадмины(self, message):
         """
         Упоминание модераторов (админы + владелец)
@@ -243,7 +232,7 @@ async def on_message(message):
 
 '''
 # TODO: Do I need a customized 'help' output command?
-@bot.command()
+@commands.command()
 async def помощь(ctx):
     Отправляет значение всех комманд
 
@@ -263,7 +252,7 @@ async def помощь(ctx):
                     '    |    То же самое.\n')
 
 
-@bot.command()
+@commands.command()
 async def bothelp(ctx):
 
     Sends the meaning of all commands
@@ -285,7 +274,7 @@ async def bothelp(ctx):
 
 # Adding all cathegories
 bot.add_cog(System())
-bot.add_cog(Ping())
+bot.add_cog(Pingg())
 bot.add_cog(Information())
 bot.add_cog(Mention())
 
