@@ -1,16 +1,16 @@
 """
 Setup:
 - 2 vitally important environment variables before running this code:
-  discord_token = <your token here>
-  discord_id = <your id here>
+  ds_server_token = <your token here>
+  ds_server_id = <your id here>
 
 - A few environment variables with some roles' ids:
-  discord_admins = <role id>
+  ds_admins = <role id>
 
-  discord_members = <role id>
+  ds_members = <role id>
   (all verified members)
 
-  discord_owner = <role id>
+  ds_hoster = <role id>
   (server's owner role)
 
 
@@ -19,19 +19,15 @@ Setup:
 
 import discord
 from discord.ext import commands
-import roles
 from forbidden_words import swearing
 import os
 import asyncio
-settings = {
-    'bot': 'LiprikonBoot',
-    'prefix': '/',
-    'TOKEN': os.environ['discord_token'],
-    'id': os.environ['discord_id']
-    }
+from bot_config import *
+
+
 client = discord.Client()
 bot = discord.Client()
-bot = commands.Bot(command_prefix = settings['prefix'])
+bot = commands.Bot(command_prefix = ds_bot_prefix)
 
 
 class System(commands.Cog):
@@ -223,52 +219,9 @@ async def on_message(message):
             await message.reply('pong', mention_author=True)
     await bot.process_commands(message)
 
-
-'''
-# TODO: Do I need a customized 'help' output command?
-@commands.command()
-async def помощь(ctx):
-    Отправляет значение всех комманд
-
-    await ctx.send(f'Все комманды должны \
-    использоваться с префиксом бота :robot: .'
-                    'Вот текущий список комманд:'
-                    '\n\n• Помощь :hammer: (help):\n'
-                    '   |----"помощь"\n'
-                    '   |    Отправляет вот это сообщение.\n'
-                    '   |----"префикс"\n'
-                    '   |    Выдаёт текущий префикс.\n'
-                    '\n• Приветствия :handshake: (ping):\n'
-                    '   |----"салам"\n'
-                    '   |    Для проверки онлайна бота (пинга), т.к. зелёная точка не всегда показывает правду.\n'
-                    '\n• Правила :closed_book: (moder):\n'
-                    '   |----"правила"\n'
-                    '    |    То же самое.\n')
-
-
-@commands.command()
-async def bothelp(ctx):
-
-    Sends the meaning of all commands
-
-    await ctx.send(f"All commands can be used only if the bot's :robot: prefix is typed right before the command."
-                    'Current list of commands:'
-                    '\n\n• Help :hammer: (help):\n'
-                    '   |----"bothelp"\n'
-                    '   |    Sends this message.\n'
-                    '   |----"prefix"\n'
-                    "   |    Sends the bot's prefix.\n"
-                    '\n• Greetings :handshake: (ping):\n'
-                    '   |----"hello"\n'
-                    "   |    It's to check if the bot is online because this green dot isn't always showing the truth.\n"
-                    '\n• Rules :closed_book: (moder):\n'
-                    '   |----"rules"\n'
-                    '   |    Reminds the rules.\n')
-'''
-
 bot.add_cog(System())
 bot.add_cog(Ping())
 bot.add_cog(Information())
 bot.add_cog(Mention())
 
-bot.run(settings['TOKEN'])
+bot.run(ds_server_token)
