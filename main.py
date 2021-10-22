@@ -30,7 +30,7 @@ bot = discord.Client()
 bot = commands.Bot(command_prefix = ds_bot_prefix)
 
 class System(commands.Cog):
-    @commands.command(pass_context=True)
+    @commands.command()
     async def clear(self, ctx,  amount=1):
         """
         Clear the chat.
@@ -56,7 +56,7 @@ class System(commands.Cog):
             await ctx.send("Not enough rights to run this.")
 
 
-    @commands.command(pass_context = True)
+    @commands.command()
     async def очистить(self, ctx, amount=1):
         """
         RU: Очистка чата.
@@ -83,7 +83,7 @@ class System(commands.Cog):
 
 
 class Ping(commands.Cog):
-    @commands.command(pass_context=True)
+    @commands.command()
     async def салам(self, ctx):
         """RU: Проверка, онлайн ли бот"""
         author = ctx.message.author
@@ -93,7 +93,7 @@ class Ping(commands.Cog):
         await ctx.message.delete()
 
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def hello(self, ctx):
         """Check if the bot is online"""
         author = ctx.message.author
