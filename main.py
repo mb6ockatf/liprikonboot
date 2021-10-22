@@ -21,13 +21,13 @@ import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
-from bot_config import ds_client_id, ds_server_token, ds_server_admins, ds_server_host, \
-ds_bot_name, ds_bot_prefix
+from bot_config import (ds_server_token, ds_server_admins, 
+    ds_bot_prefix)
 
 
 client = discord.Client()
 bot = discord.Client()
-bot = commands.Bot(command_prefix = ds_bot_prefix)
+bot = commands.Bot(command_prefix=ds_bot_prefix)
 
 class System(commands.Cog):
     @commands.command()
@@ -55,7 +55,6 @@ class System(commands.Cog):
         else:
             await ctx.send("Not enough rights to run this.")
 
-
     @commands.command()
     async def очистить(self, ctx, amount=1):
         """
@@ -81,7 +80,6 @@ class System(commands.Cog):
         else:
             await ctx.send("Недостаточно прав.")
 
-
 class Ping(commands.Cog):
     @commands.command()
     async def салам(self, ctx):
@@ -92,7 +90,6 @@ class Ping(commands.Cog):
         # TODO: Need normal delete func there
         await ctx.message.delete()
 
-
     @commands.command()
     async def hello(self, ctx):
         """Check if the bot is online"""
@@ -100,7 +97,6 @@ class Ping(commands.Cog):
         await ctx.send(f'Hello, {author.mention}!')
         await asyncio.sleep(5)
         await ctx.message.delete()
-
 
 class Information(commands.Cog):
     @commands.command(pass_context=True)
@@ -119,7 +115,6 @@ class Information(commands.Cog):
                         '    © @liprikon2020')
         await asyncio.sleep(5)
         await ctx.message.delete()
-
 
     @commands.command(pass_context=True)
     async def rules(self, ctx):
@@ -152,7 +147,6 @@ class Information(commands.Cog):
         await ctx.send(ds_bot_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
-
  
 class Mention(commands.Cog):
     @commands.command(pass_context=True)
@@ -163,14 +157,12 @@ class Mention(commands.Cog):
         await message.reply("Achtung!", role.mention, f"were mentioned by \
             {ctx.message.author.mention}", mention_author = True)
 
-
     @commands.command(pass_context=True)
     async def куадмины(self, ctx, message, guild):
         """RU: Упоминание модераторов"""
         role = discord.utils.get(guild.roles, id=ds_server_admins)
         await ctx.message.reply("Ахтунг!", role.mention, f"были упомянуты \
             {ctx.message.author.mention}", mention_author = True)
-
 
 
 @bot.event
