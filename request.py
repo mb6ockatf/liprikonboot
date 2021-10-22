@@ -45,4 +45,3 @@ headers = {
 
 
 r = requests.post(url, headers=headers, json=json)
-print('aboba')
