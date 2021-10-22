@@ -20,7 +20,6 @@ Setup:
 import discord
 from discord.ext import commands
 from forbidden_words import swearing
-import os
 import asyncio
 from bot_config import *
 
@@ -31,37 +30,9 @@ bot = commands.Bot(command_prefix = ds_bot_prefix)
 
 
 class System(commands.Cog):
-    @commands.command(pass_context=True)
-    async def ping(self, ctx):
-        """
-        Make the server not sleep.
-        Because Heroku is known to stop the code if it does nothing for some
-        time (or not?).
-        """
-        while True:
-            await ctx.send("ping")
-            await asyncio.sleep(5)
-            await ctx.message.delete()
-            await asyncio.sleep(1800)
-
 
     @commands.command(pass_context=True)
-    async def пинг(self, ctx):
-        """
-        RU: Делает так, чтобы ссервер не спал.
-        Потому что хостинг Heroku останавливает
-        сервер если он ничего не делает в течение
-        некоторого времени (а может и нет).
-        """
-        while True:
-            await ctx.send("пинг")
-            await asyncio.sleep(5)
-            await ctx.message.delete()
-            await asyncio.sleep(1800)
-
-
-    @commands.command(pass_context=True)
-    async def clear(self, ctx,  amount=None):
+    async def clear(self, ctx,  amount=1):
         """
         Clear the chat.
         Only for admins!
@@ -76,18 +47,18 @@ class System(commands.Cog):
         """
         is_admin = False
         for role in discord.Member.roles:
-            if role.name == roles.admins_role_id:
+            if role.id == ds_server_admins:
                 is_admin = True
                 break
         if is_admin:
-            await ctx.channel.purge(limit=int(amount))
-            await ctx.channel.send(':: Successfully deleted.')
+            await ctx.channel.purge(limit=amount)
+            await ctx.send(':: Successfully deleted.')
         else:
-            await ctx.send("Not enough rights to run this :-< \n  Just contact admins")
+            await ctx.send("Not enough rights to run this.")
 
 
     @commands.command(pass_context = True)
-    async def очистить(self, ctx, amount=None):
+    async def очистить(self, ctx, amount=1):
         """
         RU: Очистка чата.
         Только для админов!
@@ -102,15 +73,14 @@ class System(commands.Cog):
         """
         is_admin = False
         for role in discord.Member.roles:
-            if role.name ==roles.admins_role_id:
+            if role.id == ds_server_admins:
                 is_admin = True
                 break
         if is_admin:
-            await ctx.channel.purge(limit=int(amount))
-            await ctx.channel.send(':: Сообщения успешно удалены')
+            await ctx.channel.purge(limit=amount)
+            await ctx.send(':: Сообщения успешно удалены')
         else:
-            await ctx.send("Недостаточно прав :-< Смирись\n"
-                           " или напиши администраторам.")
+            await ctx.send("Недостаточно прав.")
 
 
 class Ping(commands.Cog):
@@ -165,7 +135,7 @@ class Information(commands.Cog):
                         Admin\n'
                         '7.Revolutions are forbidden\n'
                         '    © @liprikon2020')
-        asyncio.sleep(5)
+        await asyncio.sleep(5)
         await ctx.message.delete()
 
 
@@ -174,16 +144,14 @@ class Information(commands.Cog):
         """RU: Текущий префикс"""
         await ctx.send(settings['prefix'])
         await asyncio.sleep(5)
-        # TODO: make normal message delete
         await ctx.message.delete()
 
 
     @commands.command(pass_context=True)
-    async def prefix(self, ctx):
+    async def prefix(self, ctx, amount=1):
         """Current prefix"""
         await ctx.send(settings['prefix'])
         await asyncio.sleep(5)
-        # TODO: make normal message delete
         await ctx.message.delete()
 
  
@@ -191,23 +159,18 @@ class Mention(commands.Cog):
     @commands.command(pass_context=True)
     async def pingadmins(self, ctx,  message):
         """Pings admin role"""
-        # TODO: Bug there
-        admins = ctx.guild.get_role(roles.admins_role_id)
-        await message.reply(f"Achtung! {admins.mention} were mentioned by\
+        role = discord.utils.get(guild.roles, id=ds_server_admins)
+        role.mention
+        await message.reply("Achtung!", role.mention, f"were mentioned by \
             {ctx.message.author.mention}", mention_author = True)
 
 
     @commands.command(pass_context=True)
     async def куадмины(self, ctx):
-        """RU: Упоминание модераторов (админы + владелец).
-        Используйте команду pigadmins, если
-        упоминать владельца не нужно."""
-        a = []
-        # TODO: Bug there
-        for j in roles.moder_role_id:
-            a.append(ctx.guild.get_role(j))
-        await ctx.message.reply(f"Ахтунг! {j.mention for j in a} были \
-         упомянуты {ctx.message.author.mention}", mention_author = True)
+        """RU: Упоминание модераторов"""
+        role = discord.utils.get(guild.roles, id=ds_server_admins)
+        await ctx.message.reply("Ахтунг!", role.mention, f"были упомянуты \
+            {ctx.message.author.mention}", mention_author = True)
 
 
 
