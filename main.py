@@ -149,7 +149,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def prefix(self, ctx, amount=1):
         """Current prefix"""
-        await ctx.send(settings['prefix'])
+        await ctx.send(ds_bot_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
 
