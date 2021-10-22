@@ -1,3 +1,5 @@
+# Making a POST request to show the commands as the user type
+# Raw feature
 import requests
 
 
@@ -45,4 +47,3 @@ headers = {
 
 
 r = requests.post(url, headers=headers, json=json)
-print('aboba')
