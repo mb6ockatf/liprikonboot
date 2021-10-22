@@ -3,7 +3,7 @@
 import os
 
 # Server config
-ds_server_id = os.environ['ds_server_id']
+ds_client_id = os.environ['ds_client_id']
 ds_server_token = os.environ['ds_server_token']
 
 # List of administration roles id's
