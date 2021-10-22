@@ -1,6 +1,5 @@
 # LiprikonBoot
 [![CodeFactor](https://www.codefactor.io/repository/github/bigproject404/liprikonboot/badge/main?s=08e6506c3d546fe906cab2d0e0484189b694a25d)](https://www.codefactor.io/repository/github/bigproject404/liprikonboot/overview/main)
-[![Python application](https://github.com/BigProject404/LiprikonBoot/actions/workflows/python-app.yml/badge.svg)](https://github.com/BigProject404/LiprikonBoot/actions/workflows/python-app.yml)
 ![Liprikon](https://github.com/BigProject404/LiprikonBoot/blob/main/LiprikonBoot-avatar.jpg)
 
 ## Description
