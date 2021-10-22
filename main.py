@@ -21,7 +21,7 @@ import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
-from bot_config import ds_client_id, ds_server_token, ds_server_admins, ds_server_host,
+from bot_config import ds_client_id, ds_server_token, ds_server_admins, ds_server_host, \
 ds_bot_name, ds_bot_prefix
 
 
