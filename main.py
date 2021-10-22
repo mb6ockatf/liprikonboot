@@ -106,7 +106,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def правила(self, ctx):
         """RU: Правила"""
-        await ctx.send(f'1.Не спамить\n'
+        await ctx.send('1.Не спамить\n'
                         '2.Не бунтовать\n'
                         '3.Не оскорблять админов и других \
                         участников\n'
@@ -124,7 +124,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def rules(self, ctx):
         """Shows the rules"""
-        await ctx.send(f'1.Do not spam\n'
+        await ctx.send('1.Do not spam\n'
                         '2.Do not rebel\n'
                         '3.Do not offend admins & other members\n'
                         '4.Be polite\n'

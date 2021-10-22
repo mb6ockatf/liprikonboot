@@ -11,4 +11,4 @@ ds_server_admins = os.environ['ds_server_admins']  # Moderator's role
 ds_server_host = os.environ['ds_server_host']  # Server host's  role
 
 ds_bot_name = os.environ['ds_boot_name']
-ds_bot_prefix =  os.environ['ds_bot_prefix']
+ds_bot_prefix = os.environ['ds_bot_prefix']
