@@ -16,22 +16,21 @@ Setup:
 
 """
 
-
 import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
-from bot_config import (ds_server_token, ds_server_admins, 
-    ds_bot_prefix)
-
+from bot_config import (ds_server_token, ds_server_admins,
+                        ds_bot_prefix)
 
 client = discord.Client()
 bot = discord.Client()
 bot = commands.Bot(command_prefix=ds_bot_prefix)
 
+
 class System(commands.Cog):
     @commands.command()
-    async def clear(self, ctx,  amount=1):
+    async def clear(self, ctx, amount=1):
         """
         Clear the chat.
         Only for admins!
@@ -44,12 +43,8 @@ class System(commands.Cog):
          <prefix here>clear
         - deletes all messages
         """
-        is_admin = False
-        for role in discord.Member.roles:
-            if role.id == ds_server_admins:
-                is_admin = True
-                break
-        if is_admin:
+        role = role = ctx.guild.get_role(role_id=ds_server_admins)
+        if role in ctx.message.author.roles:
             await ctx.channel.purge(limit=amount)
             await ctx.send(':: Successfully deleted.')
         else:
@@ -69,16 +64,13 @@ class System(commands.Cog):
         <сдесь префикс>очистить
         - удалит все сообщения
         """
-        is_admin = False
-        for role in discord.Member.roles:
-            if role.id == ds_server_admins:
-                is_admin = True
-                break
-        if is_admin:
+        role = role = ctx.guild.get_role(role_id=ds_server_admins)
+        if role in ctx.message.author.roles:
             await ctx.channel.purge(limit=amount)
             await ctx.send(':: Сообщения успешно удалены')
         else:
             await ctx.send("Недостаточно прав.")
+
 
 class Ping(commands.Cog):
     @commands.command()
@@ -87,7 +79,6 @@ class Ping(commands.Cog):
         author = ctx.message.author
         await ctx.send(f'Салам алейкум, {author.mention}!')
         await asyncio.sleep(5)
-        # TODO: Need normal delete func there
         await ctx.message.delete()
 
     @commands.command()
@@ -98,21 +89,22 @@ class Ping(commands.Cog):
         await asyncio.sleep(5)
         await ctx.message.delete()
 
+
 class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def правила(self, ctx):
         """RU: Правила"""
         await ctx.send('1.Не спамить\n'
-                        '2.Не бунтовать\n'
-                        '3.Не оскорблять админов и других \
+                       '2.Не бунтовать\n'
+                       '3.Не оскорблять админов и других \
                         участников\n'
-                        '4.Быть вежливым\n'
-                        '5.Не менять название сервера без\
+                       '4.Быть вежливым\n'
+                       '5.Не менять название сервера без\
                          разрешения верховного админа\n'
-                        '6.Не банить участников без ведома \
+                       '6.Не банить участников без ведома \
                         верховного админа\n'
-                        '7.Не устраивать революции\n'
-                        '    © @liprikon2020')
+                       '7.Не устраивать революции\n'
+                       '    © @liprikon2020')
         await asyncio.sleep(5)
         await ctx.message.delete()
 
@@ -120,18 +112,17 @@ class Information(commands.Cog):
     async def rules(self, ctx):
         """Shows the rules"""
         await ctx.send('1.Do not spam\n'
-                        '2.Do not rebel\n'
-                        '3.Do not offend admins & other members\n'
-                        '4.Be polite\n'
-                        "5.Do not change the server's name with no permission of the \
+                       '2.Do not rebel\n'
+                       '3.Do not offend admins & other members\n'
+                       '4.Be polite\n'
+                       "5.Do not change the server's name with no permission of the \
                         Head Admin\n"
-                        '6.Do not ban other members with no permission of the Head \
+                       '6.Do not ban other members with no permission of the Head \
                         Admin\n'
-                        '7.Revolutions are forbidden\n'
-                        '    © @liprikon2020')
+                       '7.Revolutions are forbidden\n'
+                       '    © @liprikon2020')
         await asyncio.sleep(5)
         await ctx.message.delete()
-
 
     @commands.command(pass_context=True)
     async def префикс(self, ctx):
@@ -140,29 +131,26 @@ class Information(commands.Cog):
         await asyncio.sleep(5)
         await ctx.message.delete()
 
-
     @commands.command(pass_context=True)
     async def prefix(self, ctx, amount=1):
         """Current prefix"""
         await ctx.send(ds_bot_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
- 
-class Mention(commands.Cog):
-    @commands.command(pass_context=True)
-    async def pingadmins(self, ctx,  message, guild):
-        """Pings admin role"""
-        role = discord.utils.get(guild.roles, id=ds_server_admins)
-        role.mention
-        await message.reply("Achtung!", role.mention, f"were mentioned by \
-            {ctx.message.author.mention}", mention_author = True)
 
-    @commands.command(pass_context=True)
-    async def куадмины(self, ctx, message, guild):
+
+class Mention(commands.Cog):
+    @commands.command()
+    async def pingadmins(self, ctx: commands.Context):
+        """Pings admin role"""
+        role = ctx.guild.get_role(role_id=ds_server_admins)
+        await ctx.message.reply("Achtung!" + f"{role.mention}" + f"were mentioned")
+
+    @commands.command()
+    async def куадмины(self, ctx: commands.Context):
         """RU: Упоминание модераторов"""
-        role = discord.utils.get(guild.roles, id=ds_server_admins)
-        await ctx.message.reply("Ахтунг!", role.mention, f"были упомянуты \
-            {ctx.message.author.mention}", mention_author = True)
+        role = ctx.guild.get_role(role_id=ds_server_admins)
+        await ctx.message.reply("Ахтунг!" + f"{role.mention}" + "были упомянуты")
 
 
 @bot.event
@@ -172,6 +160,7 @@ async def on_message(message):
         if j in message.content:
             await message.reply('pong', mention_author=True)
     await bot.process_commands(message)
+
 
 bot.add_cog(System())
 bot.add_cog(Ping())
