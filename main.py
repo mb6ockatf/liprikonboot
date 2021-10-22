@@ -141,7 +141,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def префикс(self, ctx):
         """RU: Текущий префикс"""
-        await ctx.send(settings['prefix'])
+        await ctx.send(ds_bot_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
 
@@ -156,7 +156,7 @@ class Information(commands.Cog):
  
 class Mention(commands.Cog):
     @commands.command(pass_context=True)
-    async def pingadmins(self, ctx,  message):
+    async def pingadmins(self, ctx,  message, guild):
         """Pings admin role"""
         role = discord.utils.get(guild.roles, id=ds_server_admins)
         role.mention
@@ -165,7 +165,7 @@ class Mention(commands.Cog):
 
 
     @commands.command(pass_context=True)
-    async def куадмины(self, ctx):
+    async def куадмины(self, ctx, message, guild):
         """RU: Упоминание модераторов"""
         role = discord.utils.get(guild.roles, id=ds_server_admins)
         await ctx.message.reply("Ахтунг!", role.mention, f"были упомянуты \
