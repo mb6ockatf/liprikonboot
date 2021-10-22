@@ -21,16 +21,15 @@ import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
-from bot_config import *
+from bot_config import ds_client_id, ds_server_token, ds_server_admins, ds_server_host,
+ds_bot_name, ds_bot_prefix
 
 
 client = discord.Client()
 bot = discord.Client()
 bot = commands.Bot(command_prefix = ds_bot_prefix)
 
-
 class System(commands.Cog):
-
     @commands.command(pass_context=True)
     async def clear(self, ctx,  amount=1):
         """
