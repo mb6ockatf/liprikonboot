@@ -46,7 +46,7 @@ class System(commands.Cog):
         role = role = ctx.guild.get_role(role_id=ds_server_admins)
         if role in ctx.message.author.roles:
             await ctx.channel.purge(limit=amount)
-            await ctx.send(':: Successfully deleted.')
+            await ctx.send(':white_check_mark: Successfully deleted.')
         else:
             await ctx.send("Not enough rights to run this.")
 
