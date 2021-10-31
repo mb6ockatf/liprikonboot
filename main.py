@@ -1,35 +1,26 @@
 """
-Setup:
+Setup yourself:
 - 2 vitally important environment variables before running this code:
-  ds_server_token = <your token here>
-  ds_server_id = <your id here>
+  ds_app_token = <your token here>
+  ds_client_id = <client id here>
 
 - A few environment variables with some roles' ids:
-  ds_admins = <role id>
-
-  ds_members = <role id>
-  (all verified members)
-
-  ds_hoster = <role id>
-  (server's owner role)
-
-
+  ds_server_admins = <role id>
+  ds_server_host = <role id>
 """
 
 import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
-from bot_config import (ds_server_token, ds_server_admins,
-                        ds_bot_prefix)
+from bot_config import (ds_app_token, ds_server_admins,
+                        ds_prefix)
 
-client = discord.Client()
-bot = discord.Client()
-bot = commands.Bot(command_prefix=ds_bot_prefix)
+bot = commands.Bot(command_prefix=ds_prefix)
 
 
-def is_admin():
-    role = role = ctx.guild.get_role(role_id=ds_server_admins)
+def is_admin(ctx):
+    role = ctx.guild.get_role(role_id=ds_server_admins)
     if role in ctx.message.author.roles:
         return True
     else:
@@ -38,7 +29,7 @@ def is_admin():
 
 class System(commands.Cog):
     @commands.command()
-    async def clear(self, ctx, amount=1):
+    async def clear(self, ctx, amount=2):
         """
         Clear the chat.
         Only for admins!
@@ -51,14 +42,14 @@ class System(commands.Cog):
          <prefix here>clear
         - deletes all messages
         """
-        if is_admin():
+        if is_admin(ctx):
             await ctx.channel.purge(limit=amount)
             await ctx.send(':white_check_mark: Successfully deleted.')
         else:
-            await ctx.send("Not enough rights to run this.")
+            await ctx.message.reply(':red_circle: Not enough rights')
 
     @commands.command()
-    async def очистить(self, ctx, amount=1):
+    async def очистить(self, ctx, amount=2):
         """
         RU: Очистка чата.
         Только для админов!
@@ -71,11 +62,11 @@ class System(commands.Cog):
         <сдесь префикс>очистить
         - удалит все сообщения
         """
-        if is_admin():
+        if is_admin(ctx):
             await ctx.channel.purge(limit=amount)
-            await ctx.send(':white_check_mark: Сообщения успешно удалены')
+            await ctx.send(':white_check_mark: Сообщения успешно удалены.')
         else:
-            await ctx.send("Недостаточно прав.")
+            await ctx.message.reply(':red_circle: Not enough rights')
 
 
 class Ping(commands.Cog):
@@ -135,14 +126,14 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def префикс(self, ctx):
         """RU: Текущий префикс"""
-        await ctx.send(ds_bot_prefix)
+        await ctx.send(ds_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
 
     @commands.command(pass_context=True)
     async def prefix(self, ctx, amount=1):
         """Current prefix"""
-        await ctx.send(ds_bot_prefix)
+        await ctx.send(ds_prefix)
         await asyncio.sleep(5)
         await ctx.message.delete()
 
@@ -169,14 +160,10 @@ async def on_message(message):
             await message.reply('pong', mention_author=True)
     await bot.process_commands(message)
 
-# TODO: add a secret command with no documentation
-# TODO: add a mute and ban commands
-# TODO: run this code in order if it will cause any exceptions
-# TODO: Get it right with cogs, I must reorganize this stuff
 
 bot.add_cog(System())
 bot.add_cog(Ping())
 bot.add_cog(Information())
 bot.add_cog(Mention())
 
-bot.run(ds_server_token)
+bot.run(ds_app_token)
