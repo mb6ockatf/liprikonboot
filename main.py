@@ -43,7 +43,7 @@ class System(commands.Cog):
          <prefix here>clear
         - deletes all messages
         """
-        role = role = ctx.guild.get_role(role_id=ds_server_admins)
+        role = ctx.guild.get_role(role_id=ds_server_admins)
         if role in ctx.message.author.roles:
             await ctx.channel.purge(limit=amount)
             await ctx.send(':: Successfully deleted.')
@@ -64,7 +64,7 @@ class System(commands.Cog):
         <сдесь префикс>очистить
         - удалит все сообщения
         """
-        role = role = ctx.guild.get_role(role_id=ds_server_admins)
+        role = ctx.guild.get_role(role_id=ds_server_admins)
         if role in ctx.message.author.roles:
             await ctx.channel.purge(limit=amount)
             await ctx.send(':: Сообщения успешно удалены')
