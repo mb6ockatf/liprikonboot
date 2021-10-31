@@ -28,6 +28,14 @@ bot = discord.Client()
 bot = commands.Bot(command_prefix=ds_bot_prefix)
 
 
+def is_admin():
+    role = role = ctx.guild.get_role(role_id=ds_server_admins)
+    if role in ctx.message.author.roles:
+        return True
+    else:
+        return False
+
+
 class System(commands.Cog):
     @commands.command()
     async def clear(self, ctx, amount=1):
@@ -43,10 +51,9 @@ class System(commands.Cog):
          <prefix here>clear
         - deletes all messages
         """
-        role = ctx.guild.get_role(role_id=ds_server_admins)
-        if role in ctx.message.author.roles:
+        if is_admin():
             await ctx.channel.purge(limit=amount)
-            await ctx.send(':: Successfully deleted.')
+            await ctx.send(':white_check_mark: Successfully deleted.')
         else:
             await ctx.send("Not enough rights to run this.")
 
@@ -64,10 +71,9 @@ class System(commands.Cog):
         <сдесь префикс>очистить
         - удалит все сообщения
         """
-        role = ctx.guild.get_role(role_id=ds_server_admins)
-        if role in ctx.message.author.roles:
+        if is_admin():
             await ctx.channel.purge(limit=amount)
-            await ctx.send(':: Сообщения успешно удалены')
+            await ctx.send(':white_check_mark: Сообщения успешно удалены')
         else:
             await ctx.send("Недостаточно прав.")
 
@@ -94,6 +100,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def правила(self, ctx):
         """RU: Правила"""
+        # TODO: it must send a message which id is defined in env vars
         await ctx.send('1.Не спамить\n'
                        '2.Не бунтовать\n'
                        '3.Не оскорблять админов и других \
@@ -111,6 +118,7 @@ class Information(commands.Cog):
     @commands.command(pass_context=True)
     async def rules(self, ctx):
         """Shows the rules"""
+        # TODO: it must send a message which id is defined in env vars
         await ctx.send('1.Do not spam\n'
                        '2.Do not rebel\n'
                        '3.Do not offend admins & other members\n'
@@ -161,6 +169,10 @@ async def on_message(message):
             await message.reply('pong', mention_author=True)
     await bot.process_commands(message)
 
+# TODO: add a secret command with no documentation
+# TODO: add a mute and ban commands
+# TODO: run this code in order if it will cause any exceptions
+# TODO: Get it right with cogs, I must reorganize this stuff
 
 bot.add_cog(System())
 bot.add_cog(Ping())
