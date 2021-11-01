@@ -1,21 +1,11 @@
-"""
-Setup yourself:
-- 2 vitally important environment variables before running this code:
-  ds_app_token = <your token here>
-  ds_client_id = <client id here>
-
-- A few environment variables with some roles' ids:
-  ds_server_admins = <role id>
-  ds_server_host = <role id>
-"""
-
 import discord
 from discord.ext import commands
 from forbidden_words import swearing
 import asyncio
 from bot_config import (ds_app_token, ds_server_admins,
-                        ds_prefix)
+                        ds_prefix, myserver)
 
+client = discord.Client()
 bot = commands.Bot(command_prefix=ds_prefix)
 
 
@@ -42,11 +32,13 @@ class System(commands.Cog):
          <prefix here>clear
         - deletes all messages
         """
-        if is_admin(ctx):
-            await ctx.channel.purge(limit=amount)
-            await ctx.send(':white_check_mark: Successfully deleted.')
-        else:
-            await ctx.message.reply(':red_circle: Not enough rights')
+        if ctx.message.guild.id == myserver:
+            if is_admin(ctx):
+                await ctx.channel.purge(limit=amount)
+                await ctx.send(':white_check_mark: Successfully deleted.')
+            else:
+                await ctx.reply(':red_circle: Not enough rights.')
+
 
     @commands.command()
     async def очистить(self, ctx, amount=2):
@@ -62,11 +54,12 @@ class System(commands.Cog):
         <сдесь префикс>очистить
         - удалит все сообщения
         """
-        if is_admin(ctx):
-            await ctx.channel.purge(limit=amount)
-            await ctx.send(':white_check_mark: Сообщения успешно удалены.')
-        else:
-            await ctx.message.reply(':red_circle: Not enough rights')
+        if int(ctx.message.guild.id) == myserver:
+            if is_admin(ctx):
+                await ctx.channel.purge(limit=amount)
+                await ctx.send(':white_check_mark: Сообщения успешно удалены.')
+            else:
+                await ctx.reply(':red_circle: Недостаточно прав.')
 
 
 class Ping(commands.Cog):
@@ -165,5 +158,4 @@ bot.add_cog(System())
 bot.add_cog(Ping())
 bot.add_cog(Information())
 bot.add_cog(Mention())
-
 bot.run(ds_app_token)
