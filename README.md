@@ -10,8 +10,6 @@ and probably bring some fun 😋 <br/>
 
 ## In progress
 ---------------
-Unfortunately, I am incredibly busy and I often have no time to work <br/>
-on this project. Changes appear ***really*** slowly.
 
 ## Setup
 ---------------
