@@ -2,4 +2,5 @@
 .idea
 *.bat
 /testing
-/code/#TODO-request.py
+/#TODO-request.py
+/lib/__pycache__

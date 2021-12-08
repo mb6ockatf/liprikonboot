@@ -1,42 +1,19 @@
 import discord
 from discord.ext import commands
 import asyncio
-from lib import bot_config, forbidden_words
+import config
+import datetime
+import ban_words
 
-ds_app_token = bot_config.ds_app_token
-myserver = bot_config.myserver
-ds_server_admins = bot_config.ds_server_admins
-ds_server_host = bot_config.ds_server_host
-ds_prefix = bot_config.ds_prefix
-swearing = forbidden_words.swearing
+ds_app_token, myserver, ds_server_admins, ds_server_host, \
+ds_prefix, swearing, rules = config.ds_app_token, config.myserver, \
+config.ds_server_admins, config.ds_server_host, config.ds_prefix, \
+ban_words.swearing, config.rules
 
 client = discord.Client()
 bot = commands.Bot(command_prefix=ds_prefix)
+time = datetime.datetime.now
 
-setted = []
-
-
-class Settings():
-    def __init__(self, name='Flag', typed=bool, default_value=True, value=True):
-        self.name = name
-        self.type = typed
-        self.default_value = default_value
-        self.value = True
-        setted.append(self)
-    def revert(self):
-        if self.value == False:
-            self.value = True
-        elif self.value == True:
-            self.value = False
-        return self.value
-    def off(self):
-        self.value == False
-        return False
-    def on(self):
-        self.value = True
-        return True
-
-swearingpings = Settings('swearingpings')
 
 def right_server(ctx):
     if ctx.guild.id == myserver:
@@ -66,7 +43,7 @@ class Hello(commands.Cog):
 
 class Admin(commands.Cog):
     @commands.command()
-    async def clear(self, ctx, amount='2'):
+    async def purge(self, ctx, amount='2'):
         """
         Clear the chat.
         Only for admins!
@@ -123,7 +100,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def kick(self, ctx, member:discord.User=None, reason='for being too bad'):
-        """Permanеnt ban!"""
+        """Permanent ban!"""
         if right_server(ctx) and is_admin(ctx):
             await ctx.guild.kick(member, reason=reason)
             if member.id == ctx.guild.id:
@@ -141,54 +118,10 @@ class Admin(commands.Cog):
             await ctx.message.delete()
 
 
-
-class Flag(commands.Cog):
-    @commands.command()
-    async def allflags(self, ctx):
-        """Send all variable settings"""
-        a = ''
-        for j in setted:
-            print(j.name)
-            await ctx.send(str(f'{j.name}'))
-            a = a + str('Name: ' + str(j.name) + '\n' +
-                'Type: ' + str(j.type) + '\n' +
-                'Default value:' + str(j.default_value) + '\n' +
-                'Value:' + str(j.value) + '\n')
-        await ctx.send(a)
-
-    @commands.command()
-    async def allrevert(self, ctx):
-        """Make all flags' values false"""
-        previous = None
-        for k in setted:
-            if type(k.value) == bool:
-                previous = k.value
-                break
-        if previous == True:
-            for j in setted:
-                if j.type == bool:
-                    j.value = False
-        elif previous == False:
-            for j in setted:
-                if j.type == bool:
-                    j.value = True
-
-
-    @commands.command()
-    async def change(self, flag=None, method='revert'):
-        """Change the settigs"""
-        if method == 'revert':
-            await ctx.send(flag, 'value is now', flag.revert())
-        elif method == 'on':
-            await ctx.send(flag, 'value is now', flag.on())
-        elif method == 'off':
-            await ctx.send(flag, 'value is now', flag.off())
-
-
 class Mention(commands.Cog):
     @commands.command()
-    async def pingadmins(self, ctx: commands.Context):
-        """Pings admin role"""
+    async def mod(self, ctx: commands.Context):
+        """Pings moderators' role"""
         if right_server(ctx):
             role = ctx.guild.get_role(role_id=ds_server_admins)
             await ctx.message.reply("Achtung!" + f"{role.mention}" + f"were mentioned")
@@ -196,18 +129,23 @@ class Mention(commands.Cog):
 
 @bot.event
 async def on_message(ctx):
-    # React when message contains swearing
-    if swearingpings.value == False:
-        return None
+    """React when message contains ban word"""
     if right_server(ctx):
         for j in swearing:
             if j in ctx.content:
                 await ctx.reply('pong', mention_author=True)
         await bot.process_commands(ctx)
 
+time = datetime.datetime.now
+@bot.event
+async def timer(ctx):
+    if time.hour() == 7 and time.minute == 0:
+        while True:
+            await ctx.send('Доброе утро')
+            await asyncio.sleep(86400)
+
 
 bot.add_cog(Admin())
 bot.add_cog(Mention())
 bot.add_cog(Hello())
-bot.add_cog(Flag())
 bot.run(ds_app_token)
