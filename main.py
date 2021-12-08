@@ -80,9 +80,9 @@ class Admin(commands.Cog):
                            '3.Do not offend admins & other members\n'
                            '4.Be polite\n'
                            "5.Do not change the server's name with no permission of the \
-                            Head Admin\n"
+Head Admin\n"
                            '6.Do not ban other members with no permission of the Head \
-                            Admin\n'
+Admin\n'
                            '7.Revolutions are forbidden\n'
                            '    © @liprikon2020')
             await asyncio.sleep(5)
