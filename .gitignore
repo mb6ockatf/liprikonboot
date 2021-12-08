@@ -1,5 +1,5 @@
 /__pycache__
 .idea
 *.bat
-link.txt
-some-txts/
+/testing
+/code/#TODO-request.py

@@ -5,11 +5,10 @@
 
 ## Description
 ---------------
-This bot was done to make some tasks easy-to-do for the server's admin <br/>
-and probably bring some fun 😋 <br/>
+Please consider that out bot is still in progress.
+Not a lot of functions, but we're going to grow up!
+[Link to add a bot to your server](https://discord.com/oauth2/authorize?client_id=889509294536544266&scope=bot&permissions=8)
 
-## In progress
----------------
 
 ## Setup
 ---------------
