@@ -1,4 +1,3 @@
-# encoding=utf-8
 swearing = [' 6ля ', ' 6лядь ', ' 6лять ', ' b3ъeб ', ' cock ', ' cunt ', ' e6aль ', ' ebal ', ' eblan ',
  ' eбaл ', ' eбaть ', ' eбyч ', ' eбать ', ' eбёт ', ' eблантий ', ' fuck ', ' fucker ', ' fucking ', ' xyёв ',
  ' xyй ', ' xyя ', ' xуе ', ' xую ', ' zaeb ', ' zaebal ', ' zaebali ', "архипиздрит", ' ахуел ', ' ахуеть ',
