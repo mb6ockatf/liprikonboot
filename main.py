@@ -5,10 +5,10 @@ import config
 import datetime
 import ban_words
 
-ds_app_token, myserver, ds_server_admins, ds_server_host, \
+ds_app_token, my_server, ds_server_admins, ds_server_host, \
 ds_prefix, swearing, rules = config.ds_app_token, config.myserver, \
-config.ds_server_admins, config.ds_server_host, config.ds_prefix, \
-ban_words.swearing, config.rules
+                             config.ds_server_admins, config.ds_server_host, config.ds_prefix, \
+                             ban_words.swearing, config.rules
 
 client = discord.Client()
 bot = commands.Bot(command_prefix=ds_prefix)
@@ -16,7 +16,7 @@ time = datetime.datetime.now
 
 
 def right_server(ctx):
-    if ctx.guild.id == myserver:
+    if ctx.guild.id == my_server:
         return True
     else:
         return False
@@ -70,7 +70,6 @@ class Admin(commands.Cog):
             else:
                 await ctx.reply(':red_circle: Not enough rights.')
 
-
     @commands.command()
     async def rules(self, ctx):
         """Shows the rules"""
@@ -89,7 +88,7 @@ Admin\n'
             await ctx.message.delete()
 
     @commands.command()
-    async def ban(self, ctx, member:discord.User=None, reason='for being a jerk'):
+    async def ban(self, ctx, member: discord.User = None, reason='for being a jerk'):
         """Ban!"""
         if right_server(ctx) and is_admin(ctx):
             if member.id == ctx.guild.id:
@@ -99,7 +98,7 @@ Admin\n'
                 await ctx.send(f':ninja:@{member} has been banned for {reason}.')
 
     @commands.command()
-    async def kick(self, ctx, member:discord.User=None, reason='for being too bad'):
+    async def kick(self, ctx, member: discord.User = None, reason='for being too bad'):
         """Permanent ban!"""
         if right_server(ctx) and is_admin(ctx):
             await ctx.guild.kick(member, reason=reason)
@@ -136,10 +135,13 @@ async def on_message(ctx):
                 await ctx.reply('pong', mention_author=True)
         await bot.process_commands(ctx)
 
+
 time = datetime.datetime.now
+
+
 @bot.event
 async def timer(ctx):
-    if time.hour() == 7 and time.minute == 0:
+    if time.hour() == 7 and time.minute() == 0:
         while True:
             await ctx.send('Доброе утро')
             await asyncio.sleep(86400)

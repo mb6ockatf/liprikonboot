@@ -4,7 +4,7 @@ import os
 
 # Bot's configs
 ds_app_token = os.environ['ds_app_token']  # App's token
-myserver = int(os.environ['myserver'])  # Server's id
+my_server = int(os.environ['my_server'])  # Server's id
 
 # List of administration roles id's
 ds_server_admins = int(os.environ['ds_server_admins'])  # Moderator's role
