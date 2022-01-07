@@ -6,7 +6,7 @@ import datetime
 import ban_words
 
 ds_app_token, my_server, ds_server_admins, ds_server_host, \
-ds_prefix, swearing, rules = config.ds_app_token, config.myserver, \
+ds_prefix, swearing, rules = config.ds_app_token, config.my_server, \
                              config.ds_server_admins, config.ds_server_host, config.ds_prefix, \
                              ban_words.swearing, config.rules
 
@@ -22,7 +22,7 @@ def right_server(ctx):
         return False
 
 
-def is_admin(ctx=discord.ext.commands.Context):
+def is_admin(ctx):
     role = ctx.guild.get_role(role_id=ds_server_admins)
     if role in ctx.message.author.roles:
         return True
@@ -65,7 +65,7 @@ class Admin(commands.Cog):
                     except:
                         ctx.send(':ninja: Successfully deleted or some error appeared.')
                 else:
-                    await ctx.channel.purge(limit=int(amount))
+                    await ctx.channel.purge(limit=int(amount) + 1)
                     await ctx.send(':white_check_mark: Successfully deleted.')
             else:
                 await ctx.reply(':red_circle: Not enough rights.')
@@ -109,7 +109,7 @@ Admin\n'
                 await ctx.send(f':ninja:@{member} has been permanently banned for {reason}.\nI mean kicked.')
 
     @commands.command()
-    async def prefix(self, ctx, amount=1):
+    async def prefix(self, ctx):
         """Current prefix"""
         if right_server(ctx):
             await ctx.send(ds_prefix)
@@ -136,14 +136,11 @@ async def on_message(ctx):
         await bot.process_commands(ctx)
 
 
-time = datetime.datetime.now
-
-
 @bot.event
 async def timer(ctx):
-    if time.hour() == 7 and time.minute() == 0:
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == 0:
         while True:
-            await ctx.send('Доброе утро')
+            await ctx.send('гуте могрен')
             await asyncio.sleep(86400)
 
 
