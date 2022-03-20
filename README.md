@@ -10,6 +10,7 @@ Not a lot of functions, but we're going to grow up!
 *Welcome for contributions*. I have never worked together on GitHub.
 
 
+
 ## Setup
 ---------------
 To add this bot to your server you have to download this code (and unpack it, of course).
