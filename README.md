@@ -1,7 +1,7 @@
 # LiprikonBoot
 
 
-![Liprikon](https://github.com/BigProject404/LiprikonBoot/blob/LiprikonBoot_discord/LiprikonBoot-avatar.jpg?raw=true)
+![Liprikon](https://proprikol.ru/wp-content/uploads/2020/09/kartinki-lyagushki-15.jpg)
 
 
 ## Description
