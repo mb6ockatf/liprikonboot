@@ -18,4 +18,5 @@ server's id right-clicking on it's name. Make sure that the developer mode is en
 Than push the bot - i.e. this folder - onto the hosting. I recommend [Heroku](https://www.heroku.com/). It's not difficult to use, and there are loads of tutorials for it on the net.
 
 [Link to give the bot a right to use your server.](https://discord.com/oauth2/authorize?client_id=889509294536544266&scope=bot&permissions=8)
+
 Official link, not scam. I promise.
