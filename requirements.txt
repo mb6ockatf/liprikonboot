@@ -1,3 +1,4 @@
 discord
+argparse
 requests
 asyncio

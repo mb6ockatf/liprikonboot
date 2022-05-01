@@ -1,129 +1,105 @@
 import discord
 from discord.ext import commands
 import asyncio
-import config
 import datetime
-import ban_words
+from ban_words import swearing
+from argparse import ArgumentParser
 
-ds_app_token, my_server, ds_server_admins, ds_server_host, \
-ds_prefix, swearing, rules = config.ds_app_token, config.my_server, \
-                             config.ds_server_admins, config.ds_server_host, config.ds_prefix, \
-                             ban_words.swearing, config.rules
-
+parser = ArgumentParser(description='start 1 instance', prog='%(prog)', epilog='never share token')
+waited_args = {'-token': 'app token', '-server': 'id of the server the bot is going to run on',
+               '-admins': "id of the server admins role / account's id",
+               '-host': "Server host's role / account's id", '-prefix': 'bot commands prefix',
+               '-rules': "name of a *.txt file which contain a the rules"}
+[parser.add_argument(arg, help=help_string) for arg, help_string in waited_args.items()]
+args = parser.parse_args()
+with open(args.rules, 'r') as file:
+    args.rules = file.read()
 client = discord.Client()
-bot = commands.Bot(command_prefix=ds_prefix)
+bot = commands.Bot(command_prefix=args.prefix)
 time = datetime.datetime.now
+messages = {'ban_yourself': ":ninja: You can't ban or kick yourself.\n\
+It's not my idea, it's just forbidden by Discord."}
 
-
+print(discord.__version__)
 def right_server(ctx):
-    if ctx.guild.id == my_server:
-        return True
-    else:
-        return False
+    print(0)
+    return True if str(ctx.guild.id) == args.server else False
 
 
 def is_admin(ctx):
-    role = ctx.guild.get_role(role_id=ds_server_admins)
-    if role in ctx.message.author.roles:
-        return True
-    else:
-        return False
+    return True if ctx.guild.get_role(role_id=int(args.admins)) in ctx.message.author.roles else False
 
 
-class Hello(commands.Cog):
-    @commands.command()
-    async def hello(self, ctx):
-        """Check if the bot is online"""
-        if right_server(ctx):
-            author = ctx.message.author
-            await ctx.send(f'Hello, {author.mention}!')
-            await asyncio.sleep(5)
-            await ctx.message.delete()
+@bot.tree.command()
+async def hello(ctx):
+    """Get a greeting from bot"""
+    if right_server(ctx):
+        print(1)
+        author = ctx.message.author
+        await ctx.send(f'Hello, {author.mention}!')
+        await asyncio.sleep(5)
+        await ctx.message.delete()
 
 
-class Admin(commands.Cog):
-    @commands.command()
-    async def purge(self, ctx, amount='2'):
-        """
-        Clear the chat.
-        Only for admins!
-        Deletes the quantity of messages which is mentioned after the command,
-        or deletes *all messages*
-        For an instance,
-        <prefix here>clear 12
-        - deletes 12 last messages,
-        and
-         <prefix here>clear
-        - deletes 2 messages: 1 where the func was called and 1 previous
-        """
-        if right_server(ctx):
-            if is_admin(ctx):
-                if amount == 'all':
-                    try:
-                        while True:
-                            await ctx.channel.purge()
-                    except:
-                        ctx.send(':ninja: Successfully deleted or some error appeared.')
-                else:
-                    await ctx.channel.purge(limit=int(amount) + 1)
-                    await ctx.send(':white_check_mark: Successfully deleted.')
-            else:
-                await ctx.reply(':red_circle: Not enough rights.')
+@bot.command()
+async def purge(ctx, amount='2'):
+    """Deletes the given number of messages"""
+    if right_server(ctx):
+        if is_admin(ctx):
+            for _ in range(int(amount)):
+                try:
+                    await ctx.channel.purge()
+                except BaseException as error:
+                    await ctx.send(f':ninja: Successfully deleted or an error appeared: {error}')
+            await ctx.channel.purge()
+            await ctx.send(':white_check_mark: Successfully deleted.')
+        else:
+            await ctx.reply(':red_circle: Not enough rights.')
 
-    @commands.command()
-    async def rules(self, ctx):
-        """Shows the rules"""
-        if right_server(ctx):
-            await ctx.send('1.Do not spam\n'
-                           '2.Do not rebel\n'
-                           '3.Do not offend admins & other members\n'
-                           '4.Be polite\n'
-                           "5.Do not change the server's name with no permission of the \
-Head Admin\n"
-                           '6.Do not ban other members with no permission of the Head \
-Admin\n'
-                           '7.Revolutions are forbidden\n'
-                           '    © @liprikon2020')
-            await asyncio.sleep(5)
-            await ctx.message.delete()
 
-    @commands.command()
-    async def ban(self, ctx, member: discord.User = None, reason='for being a jerk'):
-        """Ban!"""
-        if right_server(ctx) and is_admin(ctx):
-            if member.id == ctx.guild.id:
-                await ctx.send(f":ninja: You can't ban yourself.\nIt's not my idea, it's just forbidden by Discord.")
-            else:
-                await ctx.guild.ban(member, reason=reason)
-                await ctx.send(f':ninja:@{member} has been banned for {reason}.')
+@bot.command()
+async def rules(ctx):
+    """Send the rules"""
+    if right_server(ctx):
+        await ctx.send(args.rules)
 
-    @commands.command()
-    async def kick(self, ctx, member: discord.User = None, reason='for being too bad'):
-        """Permanent ban!"""
-        if right_server(ctx) and is_admin(ctx):
+
+@bot.command()
+async def ban(ctx, member: discord.User = None, reason='for being a jerk'):
+    """Ban command"""
+    if right_server(ctx) and is_admin(ctx):
+        if member.id == ctx.guild.id:
+            await ctx.send(messages['ban_yourself'])
+        else:
+            await ctx.guild.ban(member, reason=reason)
+            await ctx.send(f':ninja:@{member} has been banned for {reason}.')
+
+
+@bot.command()
+async def kick(ctx, member: discord.User = None, reason='for being too bad'):
+    """Kick command"""
+    if right_server(ctx) and is_admin(ctx):
+        if member.id == ctx.guild.id:
+            await ctx.send(messages['ban_yourself'])
+        else:
             await ctx.guild.kick(member, reason=reason)
-            if member.id == ctx.guild.id:
-                await ctx.send(f":ninja: You can't ban yourself.\nIt's not my idea, it's just forbidden by Discord.")
-            else:
-                await ctx.guild.kick(member, reason=reason)
-                await ctx.send(f':ninja:@{member} has been permanently banned for {reason}.\nI mean kicked.')
-
-    @commands.command()
-    async def prefix(self, ctx):
-        """Current prefix"""
-        if right_server(ctx):
-            await ctx.send(ds_prefix)
-            await asyncio.sleep(5)
-            await ctx.message.delete()
+            await ctx.guild.kick(member, reason=reason)
+            await ctx.send(f':ninja:@{member} has been permanently kicked for {reason}')
 
 
-class Mention(commands.Cog):
-    @commands.command()
-    async def mod(self, ctx: commands.Context):
-        """Pings moderators' role"""
-        if right_server(ctx):
-            role = ctx.guild.get_role(role_id=ds_server_admins)
-            await ctx.message.reply("Achtung!" + f"{role.mention}" + f"were mentioned")
+@bot.command()
+async def prefix(ctx):
+    """Current prefix"""
+    if right_server(ctx):
+        await ctx.send(args.prefix)
+
+
+@bot.command()
+async def mod(ctx):
+    """Pings admin role"""
+    if right_server(ctx):
+        role = ctx.guild.get_role(role_id=int(args.admins))
+        await ctx.message.reply(role.mention + 'were mentioned')
 
 
 @bot.event
@@ -137,14 +113,9 @@ async def on_message(ctx):
 
 
 @bot.event
-async def timer(ctx):
+async def morning(ctx):
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == 0:
-        while True:
-            await ctx.send('гуте могрен')
-            await asyncio.sleep(86400)
+        await ctx.send('Good morning! :grinning:\nWish this day will be nice to you')
 
 
-bot.add_cog(Admin())
-bot.add_cog(Mention())
-bot.add_cog(Hello())
-bot.run(ds_app_token)
+bot.run(args.token)
