@@ -23,9 +23,9 @@ async def on_message(message):
             await message.channel.send(dt.now() - start)
         elif command == 'log':
             b = '\n'
-            system(f'echo {" ".join(content[1:]) + b} >> ../logging.txt')
+            system(f'echo "{" ".join(content[1:]) + b}" >> ../logging.txt')
         elif command == 'system':
-            await message.channel.send(system(" ".join(content[1:])))
+            await message.channel.send('Exit code: ' + str(system(" ".join(content[1:]))))
 
 
 client.run(TOKEN)
