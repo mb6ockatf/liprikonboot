@@ -36,8 +36,7 @@ async def hello(ctx):
         print(1)
         author = ctx.message.author
         await ctx.send(f'Hello, {author.mention}!')
-        await asyncio.sleep(5)
-        await ctx.message.delete()
+
 
 
 @bot.command()
