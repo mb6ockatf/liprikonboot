@@ -48,7 +48,6 @@ async def purge(ctx, amount='2'):
                     await ctx.channel.purge()
                 except BaseException as error:
                     await ctx.send(f':ninja: Successfully deleted or an error appeared: {error}')
-            await ctx.channel.purge()
             await ctx.send(':white_check_mark: Successfully deleted.')
         else:
             await ctx.reply(':red_circle: Not enough rights.')
