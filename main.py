@@ -38,16 +38,12 @@ async def hello(ctx):
         await ctx.send(f'Hello, {author.mention}!')
 
 
-@bot.command()
-async def purge(ctx, amount='2'):
+@bot.command(pass_context=True)
+async def purge(ctx, amount=2):
     """Deletes the given number of messages"""
     if right_server(ctx):
         if is_admin(ctx):
-            for _ in range(int(amount)):
-                try:
-                    await ctx.channel.purge()
-                except BaseException as error:
-                    await ctx.send(f':ninja: Successfully deleted or an error appeared: {error}')
+            await purge(ctx.message.channel, limit=amount)
             await ctx.send(':white_check_mark: Successfully deleted.')
         else:
             await ctx.reply(':red_circle: Not enough rights.')
