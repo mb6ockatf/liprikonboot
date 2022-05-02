@@ -26,17 +26,16 @@ def right_server(ctx):
 
 
 def is_admin(ctx):
-    return True if ctx.guild.get_role(role_id=int(args.admins)) in ctx.message.author.roles else False
+    return True if ctx.guild.get_role(
+        role_id=int(args.admins)) in ctx.message.author.roles else False
 
 
 @bot.command()
 async def hello(ctx):
     """Get a greeting from bot"""
     if right_server(ctx):
-        print(1)
         author = ctx.message.author
         await ctx.send(f'Hello, {author.mention}!')
-
 
 
 @bot.command()
