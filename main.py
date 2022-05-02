@@ -23,7 +23,7 @@ async def on_message(message):
             await message.channel.send(dt.now() - start)
         elif command == 'log':
             b = '\n'
-            system(f'echo "{" ".join(content[1:]) + b}" >> ../logging.txt')
+            system(f'echo "{" ".join(content[1:])}" >> ../logging.txt')
         elif command == 'system':
             system(f" {' '.join(content[1:])} > temp.txt")
             await message.channel.send(open('temp.txt', 'r').read())
