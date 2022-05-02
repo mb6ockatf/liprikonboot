@@ -20,9 +20,8 @@ time = datetime.datetime.now
 messages = {'ban_yourself': ":ninja: You can't ban or kick yourself.\n\
 It's not my idea, it's just forbidden by Discord."}
 
-print(discord.__version__)
+
 def right_server(ctx):
-    print(0)
     return True if str(ctx.guild.id) == args.server else False
 
 
