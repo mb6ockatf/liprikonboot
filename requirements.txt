@@ -1,4 +1,1 @@
 discord
-argparse
-requests
-asyncio
