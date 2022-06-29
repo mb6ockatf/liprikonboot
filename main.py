@@ -10,7 +10,7 @@ client, start = Client(max_messages=10), dt.now()
 async def on_message(message):
     author, content = message.author, " ".join(message.content.split())
     command = content[0:content.find(' ')]
-    if author in (client.user, 725303688192720977):
+    if author in client.user:
         return
     if command == '$ping':
         await message.channel.send('pong')
